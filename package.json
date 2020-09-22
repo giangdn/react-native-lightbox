@@ -30,6 +30,10 @@
   },
   "homepage": "https://github.com/oblador/react-native-lightbox",
   "dependencies": {
-    "prop-types": "^15.7.2"
+    "prop-types": "^15.7.2",
+    "@react-native-community/blur": "^3.6.0"
+  },
+  "devDependencies": {
+    "@react-native-community/blur": "^3.6.0"
   }
 }
