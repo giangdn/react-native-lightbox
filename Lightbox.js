@@ -1,8 +1,8 @@
-import React, {Component, Children, cloneElement} from 'react';
-import PropTypes from 'prop-types';
-import {Animated, TouchableHighlight, View} from 'react-native';
+import React, { Component, Children, cloneElement } from "react";
+import PropTypes from "prop-types";
+import { Animated, TouchableHighlight, View } from "react-native";
 
-import LightboxOverlay from './LightboxOverlay';
+import LightboxOverlay from "./LightboxOverlay";
 
 export default class Lightbox extends Component {
   static propTypes = {
@@ -17,11 +17,11 @@ export default class Lightbox extends Component {
     onClose: PropTypes.func,
     springConfig: PropTypes.shape({
       tension: PropTypes.number,
-      friction: PropTypes.number,
+      friction: PropTypes.number
     }),
     swipeToDismiss: PropTypes.bool,
-    blurType: PropTypes.oneOf(['light', 'dark']),
-    blurAmount: PropTypes.number,
+    blurType: PropTypes.oneOf(["light", "dark"]),
+    blurAmount: PropTypes.number
   };
 
   static defaultProps = {
@@ -30,7 +30,7 @@ export default class Lightbox extends Component {
     didOpen: () => {},
     willClose: () => {},
     onClose: () => {},
-    onLongPress: () => {},
+    onLongPress: () => {}
   };
 
   state = {
@@ -39,9 +39,9 @@ export default class Lightbox extends Component {
       x: 0,
       y: 0,
       width: 0,
-      height: 0,
+      height: 0
     },
-    layoutOpacity: new Animated.Value(1),
+    layoutOpacity: new Animated.Value(1)
   };
 
   getContent = () => {
@@ -50,7 +50,7 @@ export default class Lightbox extends Component {
     } else if (this.props.activeProps) {
       return cloneElement(
         Children.only(this.props.children),
-        this.props.activeProps,
+        this.props.activeProps
       );
     }
     return this.props.children;
@@ -68,7 +68,7 @@ export default class Lightbox extends Component {
     willClose: this.props.willClose,
     onClose: this.onClose,
     blurAmount: this.props.blurAmount,
-    blurType: this.props.blurType,
+    blurType: this.props.blurType
   });
 
   open = () => {
@@ -83,35 +83,35 @@ export default class Lightbox extends Component {
             width,
             height,
             x: px,
-            y: py,
-          },
+            y: py
+          }
         },
         () => {
           this.props.didOpen();
           if (this.props.navigator) {
             const route = {
               component: LightboxOverlay,
-              passProps: this.getOverlayProps(),
+              passProps: this.getOverlayProps()
             };
             const routes = this.props.navigator.getCurrentRoutes();
             routes.push(route);
             this.props.navigator.immediatelyResetRouteStack(routes);
           } else {
             this.setState({
-              isOpen: true,
+              isOpen: true
             });
           }
           setTimeout(() => {
             this._root && this.state.layoutOpacity.setValue(0);
           });
-        },
+        }
       );
     });
   };
 
   close = () => {
     throw new Error(
-      'Lightbox.close method is deprecated. Use renderHeader(close) prop instead.',
+      "Lightbox.close method is deprecated. Use renderHeader(close) prop instead."
     );
   };
 
@@ -119,9 +119,9 @@ export default class Lightbox extends Component {
     this.state.layoutOpacity.setValue(1);
     this.setState(
       {
-        isOpen: false,
+        isOpen: false
       },
-      this.props.onClose,
+      this.props.onClose
     );
     if (this.props.navigator) {
       const routes = this.props.navigator.getCurrentRoutes();
@@ -136,12 +136,14 @@ export default class Lightbox extends Component {
       <View
         ref={component => (this._root = component)}
         style={this.props.style}
-        onLayout={() => {}}>
-        <Animated.View style={{opacity: this.state.layoutOpacity}}>
+        onLayout={() => {}}
+      >
+        <Animated.View style={{ opacity: this.state.layoutOpacity }}>
           <TouchableHighlight
             underlayColor={this.props.underlayColor}
-            onPress={this.open}
-            onLongPress={this.props.onLongPress}>
+            onPress={this.props.onPress}
+            onLongPress={this.open}
+          >
             {this.props.children}
           </TouchableHighlight>
         </Animated.View>
